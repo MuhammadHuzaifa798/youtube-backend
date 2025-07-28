@@ -21,7 +21,6 @@ import fs from "fs"
             } 
 
             const response = await cloudinary.uploader.upload(localfilepath,{
-                // folder : "upload",
                 resource_type : "auto"
             })
 
@@ -31,7 +30,7 @@ import fs from "fs"
             
             console.log("file is uploaded on cloudinary ", response.url);
 
-            // fs.unlinkSync(localfilepath)
+             fs.unlinkSync(localfilepath)
             return response
             
         } catch (error) {
@@ -41,4 +40,22 @@ import fs from "fs"
         }
     }
     
-    export {uploadOnCloudinary}
+    const deleteFromCloudinary = async (publicId) => {
+        try {
+            if (!publicId) {
+                throw new Error("Public ID is required for deletion");
+            }
+
+            const response = await cloudinary.api.delete_resources(publicId, {
+                resource_type: "image"   }
+            );
+            console.log("File deleted from Cloudinary:", response);
+            return response;
+        } catch (error) {
+            console.error("Error deleting file from Cloudinary:", error);
+            return null;
+        }
+    }
+
+
+    export {uploadOnCloudinary, deleteFromCloudinary}
