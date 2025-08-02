@@ -316,18 +316,16 @@ const updateAccountdetails = AsyncHandler(async (req,res)=>{
 
 
 const updateAvatar = AsyncHandler(async (req,res)=>{
-    const avatarlocalpAth = req.file?.path
+    const avatarlocalpath = req.file?.path
 
-    if (!avatarlocalpAth){
+
+    console.log(avatarlocalpath)
+    if (!avatarlocalpath){
         throw new ApiError(400,"avatar is required")
     }
 
-    let pubicId = "";
-    if (req.user.avatar) {
-        const fileName = req.user.avatar.split("/").pop(); // e.g., "ehdjcnc3zk0swmz0p9xa.png"
-        pubicId = fileName ? fileName.split(".")[0] : "";
-    }
-    const deletedavatar = await deleteFromCloudinary(pubicId)
+   console.log(req.user.avatar)
+    const deletedavatar = await deleteFromCloudinary(req.user.avatar)
     if (!deletedavatar) {
         console.error("Failed to delete old avatar from Cloudinary");
     }
@@ -338,7 +336,7 @@ const updateAvatar = AsyncHandler(async (req,res)=>{
     //     console.error("Failed to delete local file:", err.message);
     // }
 
-    const avatar = await uploadOnCloudinary(avatarlocalpAth)
+    const avatar = await uploadOnCloudinary(avatarlocalpath)
     if (!avatar) {
         throw new ApiError(400, "Avatar upload failed")
     }

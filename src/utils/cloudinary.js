@@ -40,8 +40,14 @@ import fs from "fs"
         }
     }
     
-    const deleteFromCloudinary = async (publicId) => {
+    const deleteFromCloudinary = async (url) => {
         try {
+    
+            let publicId = "";
+            if (url) {
+            const fileName = url.split("/").pop(); // e.g., "ehdjcnc3zk0swmz0p9xa.png"
+            publicId = fileName ? fileName.split(".")[0] : "";
+          }
             if (!publicId) {
                 throw new Error("Public ID is required for deletion");
             }
