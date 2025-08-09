@@ -4,17 +4,17 @@ import mongoose,{ Schema } from "mongoose";
 const playlistSchema = new Schema(
     {
         name : {
-            type : string ,
+            type : String ,
             require : true
         },
         description : {
-            type : string,
+            type : String,
             require : true
         },
-        videos : {
+        videos : [{
             type : Schema.Types.ObjectId,
             ref :"Video"
-        },
+        }],
         owner: {
             type : Schema.Types.ObjectId,
             ref : "User"
@@ -25,3 +25,5 @@ const playlistSchema = new Schema(
         timestamps : true
     }
 )
+
+export const Playlist = mongoose.model("playlist", playlistSchema);
